@@ -1,0 +1,145 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+ul {
+  padding: 0;
+}
+li {
+  list-style-type: none;
+}
+a {
+  color: #4e69ca;
+  text-decoration: none;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.nav {
+  display: flex;
+}
+.nav li {
+  margin-right: 15px;
+}
+.active {
+  font-weight: bold;
+}
+.languages {
+  display: flex;
+  justify-content: center;
+}
+.languages li {
+  cursor: pointer;
+  margin: 10px;
+  font-weight: bold;
+  padding: 5px;
+}
+.highlight-color {
+  display: none;
+}
+
+.highlight {
+  background: #f9f9f9;
+  border-bottom:2px solid white;
+  border-radius:20px;
+  box-shadow: 0 0 10px rgba(78,105,202, 0.2);
+  display: block;
+  left:0;
+  position: absolute;
+  top:0;
+  transition: all 0.2s;
+  z-index: -1;
+}
+.popular-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.popular-item {
+  margin: 20px;
+  text-align: center;
+}
+.popular-rank {
+  font-size: 20px;
+  margin: 10px;
+}
+.space-list-items {
+  margin-bottom: 8px;
+}
+.avatar {
+  width: 150px;
+}
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.button {
+  color: #e6e6e6;
+  border: none;
+  border-radius: 3px;
+  background: #4e69ca;
+  display: block;
+  font-size: 16px;
+  margin: 20px auto;
+  padding: 7px 0;
+  text-align: center;
+  transition: all .5s;
+  width: 200px;
+}
+
+.button:hover:enabled {
+  background: #4e59ca;
+  color: #fff;
+  text-decoration: none;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+.row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.column {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+}
+
+.column input {
+  border-radius: 3px;
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.43);
+  font-size: 16px;
+}
+
+.column label {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 200;
+}
+
+.header {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 200;
+}
+.reset {
+  border: none;
+  background: transparent;
+  color: #4e69ca;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.reset:hover {
+  cursor: pointer;
+}
