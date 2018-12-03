@@ -27,12 +27,12 @@ Profile.propTypes = {
   info: PropTypes.object.isRequired,
 }
 
-function Player (props) {
+function Player ({ label, score, profile }) {
   return (
     <div>
-      <h1 className='header'>{props.label}</h1>
-      <h3 style={{textAlign: 'center'}}>{props.score}</h3>
-      <Profile info={props.profile}/>
+      <h1 className='header'>{label}</h1>
+      <h3 style={{textAlign: 'center'}}>{score}</h3>
+      <Profile info={profile}/>
     </div>
   )
 }
@@ -45,42 +45,38 @@ Player.propTypes = {
 
 
 class Results extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      winner: null,
-      loser: null,
-      error: null,
-      loading: true,
-    }
+  state = {
+    winner: null,
+    loser: null,
+    error: null,
+    loading: true,
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const players = queryString.parse(this.props.location.search);
-    console.log(players)
-    battle([
+
+    const results = await battle([
       players.playerOneName,
       players.playerTwoName,
-    ]).then((results) => {
-      if (results === null) {
-        return this.setState(()=>{
-          return {
-            error: 'Looks like there was an error. Make sure both users exist on github.',
-            loading: false,
-          }
-        });
-      }
+    ]);
 
-      this.setState(()=>{
+    if (results === null) {
+      return this.setState(()=> {
         return {
-          error: null,
-          winner: results[0],
-          loser: results[1],
+          error: 'Looks like there was an error. Make sure both users exist on github.',
           loading: false,
         }
       })
-    });
+    }
+
+    this.setState(()=> {
+      return {
+        error: null,
+        winner: results[0],
+        loser: results[1],
+        loading: false,
+      }
+    })
   }
 
   render(){

@@ -4,15 +4,12 @@ import Home from './Home';
 import Popular from './Popular';
 import Battle from './Battle';
 import Results from './Results';
-const ReactRouter = require('react-router-dom');
-const Router = ReactRouter.BrowserRouter;
-const Route = ReactRouter.Route
-const Switch = ReactRouter.Switch;
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
 
 class App extends React.Component {
   render(){
     return(
-      <Router>
+      <BrowserRouter>
         <div className='container'>
           <Nav />
           <Switch>
@@ -23,7 +20,7 @@ class App extends React.Component {
             <Route render={()=> <p> not found 💩 </p>} />
           </Switch>
         </div>
-      </Router>
+      </BrowserRouter>
     )
   }
 }

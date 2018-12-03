@@ -6,7 +6,7 @@ import Loading from './Loading';
 
 function SelectLanguage(props) {
   const languages = ['All', 'JavaScript', 'CSS', 'Ruby', 'Python', 'Java'];
-
+  const { onSelect, selectedLanguage } = props;
   return(
     <ul className='languages'>
     {languages.map(lang => {
@@ -15,8 +15,8 @@ function SelectLanguage(props) {
         className=''
         key={lang}
         onMouseEnter={highlightLink}
-        onClick={props.onSelect.bind(null, lang)}
-        style={lang === props.selectedLanguage ? {color: '#ffcc1a'}: null}>
+        onClick={()=> onSelect(lang)}
+        style={lang === selectedLanguage ? {color: '#ffcc1a'}: null}>
           {lang}
         </li>
       )
@@ -26,24 +26,24 @@ function SelectLanguage(props) {
 }
 
 
-function RepoGrid(props) {
+function RepoGrid({ repos }) {
   return (
     <ul className='popular-list'>
-      {props.repos.map((repo, index)=> {
+      {repos.map(({ name, owner, html_url, stargazers_count }, index) => {
         return (
-          <li className='popular-item' key={repo.name} >
+          <li className='popular-item' key={name} >
             <div className='popular-rank'>#{index + 1}</div>
             <ul className='space-list-items'>
               <li>
                 <img
                   className='avatar'
-                  src={repo.owner.avatar_url}
-                  alt={`Avatar for ${repo.owner.login}`} />
+                  src={owner.avatar_url}
+                  alt={`Avatar for ${owner.login}`} />
               </li>
-              <li><a href={repo.html_url}>{repo.name}</a></li>
-              <li>@{repo.owner.login}</li>
-              <li>{repo.owner.login}</li>
-              <li>{repo.stargazers_count} stars</li>
+              <li><a href={html_url}>{name}</a></li>
+              <li>@{owner.login}</li>
+              <li>{owner.login}</li>
+              <li>{stargazers_count} stars</li>
             </ul>
           </li>
         )
@@ -64,55 +64,44 @@ SelectLanguage.propTypes = {
 
 
 class Popular extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedLanguage: 'All',
-      repos: null,
-    };
-
-    this.updateLanguage = this.updateLanguage.bind(this);
-  }
+  state = {
+    selectedLanguage: 'All',
+    repos: null,
+  };
 
   componentDidMount() {
     this.updateLanguage(this.state.selectedLanguage);
   }
 
   componentWillUnmount() {
-    document.querySelector('.highlight').remove();
+    if (document.querySelector('.highlight') !== null) {
+      document.querySelector('.highlight').remove();
+    }
   }
 
-  updateLanguage (lang) {
+  updateLanguage = async (lang) => {
     this.setState(() => {
       return {
         selectedLanguage: lang,
         repos: null,
       }
     });
-
-    fetchPopularRepos(lang)
-      .then((repos) => {
-        this.setState(() => {
-          return {
-            repos: repos,
-          }
-        })
-      });
+    const repos = await fetchPopularRepos(lang);
+    this.setState(() => ({repos: repos}));
   }
 
   render() {
-    const { selectedLanguage } = this.state;
+    const { selectedLanguage, repos } = this.state;
     return (
       <div>
         <SelectLanguage
         onSelect={this.updateLanguage}
-        selectedLanguage={this.state.selectedLanguage}
+        selectedLanguage={selectedLanguage}
         />
 
         {!this.state.repos
           ? <Loading text='loading your stuff' />
-          : <RepoGrid repos={this.state.repos} />}
+          : <RepoGrid repos={repos} />}
       </div>
     )
   }
